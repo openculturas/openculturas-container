@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    build_amd64: true
+
+  tasks:
+    - name: Build the x86 Docker image from the main Dockerfile.
+      docker_image:
+        build:
+          path: ./
+          nocache: true
+          pull: true
+        name: openculturas/openculturas
+        tag: latest
+        source: build
+        force_source: true
+      when: build_amd64 | bool
