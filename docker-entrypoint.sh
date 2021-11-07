@@ -14,13 +14,13 @@ DRUPAL_PROJECT_ROOT=${DRUPAL_PROJECT_ROOT:-$APACHE_DOCUMENT_ROOT}
 
 # Allow users to override the docroot by setting an environment variable.
 if [ "$APACHE_DOCUMENT_ROOT" != "/var/www/html" ]; then
-  sed -ri -e "s|/var/www/html|$APACHE_DOCUMENT_ROOT|g" /etc/apache2/sites-enabled/*.conf
-  sed -ri -e "s|/var/www/html|$APACHE_DOCUMENT_ROOT|g" /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+  sed -ri -e "s|DocumentRoot .*|DocumentRoot $APACHE_DOCUMENT_ROOT|g" /etc/apache2/sites-enabled/*.conf
+  sed -ri -e "s|DocumentRoot .*|DocumentRoot $APACHE_DOCUMENT_ROOT|g" /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 fi
 
 # Download Drupal to $APACHE_DOCUMENT_ROOT if it's not present.
 if [ ! -f $APACHE_DOCUMENT_ROOT/index.php ] && [ $DRUPAL_DOWNLOAD_IF_NOT_PRESENT = true ]; then
-  echo "Removing any existing files inside $APACHE_DOCUMENT_ROOT..."
+  echo "Removing any existing files inside $DRUPAL_PROJECT_ROOT..."
   find $DRUPAL_PROJECT_ROOT -type f -maxdepth 1 -delete || true
 
   cd $DRUPAL_PROJECT_ROOT
