@@ -72,5 +72,10 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 
 WORKDIR "/var/www/html"
 
+ENV PROJECT_NAME=openculturas/openculturas-project
+ENV PROJECT_VERSION=dev-main
+
+RUN composer create-project --no-interaction --remove-vcs $PROJECT_NAME . $PROJECT_VERSION
+
 EXPOSE 80
 CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
