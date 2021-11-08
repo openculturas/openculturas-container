@@ -28,15 +28,17 @@ cat <<EOF >> $APACHE_DOCUMENT_ROOT/sites/default/settings.php
   'port' => '$DRUPAL_DATABASE_PORT',
   'namespace' => 'Drupal\\\\Core\\\\Database\\\\Driver\\\\mysql',
   'driver' => 'mysql',
-);
+];
 \$settings["config_sync_directory"] = '../config/sync';
 \$settings['hash_salt'] = '$DRUPAL_HASH_SALT';
 EOF
 
-  echo "Correcting permissions on /var/www..."
-  chown -R www-data:www-data /var/www
+echo "Correcting permissions on /var/www..."
+chown -R www-data:www-data /var/www
 
-  echo "Drupal codebase ready! Now!"
-fi
+echo "Initializing .my.cnf..."
+printf "[client]\ndatabase=$DRUPAL_DATABASE_NAME\nuser=$DRUPAL_DATABASE_USERNAME\npassword=$DRUPAL_DATABASE_PASSWORD\nhost=$DRUPAL_DATABASE_HOST\nport=$DRUPAL_DATABASE_PORT\n" > ~/.my.cnf
+
+echo "Drupal codebase ready! Now!"
 
 exec "$@"
