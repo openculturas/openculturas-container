@@ -15,19 +15,11 @@ if [ "$APACHE_DOCUMENT_ROOT" != "/var/www/html" ]; then
   sed -ri -e "s|DocumentRoot .*|DocumentRoot $APACHE_DOCUMENT_ROOT|g" /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 fi
 
-# Download Drupal to $APACHE_DOCUMENT_ROOT if it's not present.
-if [ ! -f $APACHE_DOCUMENT_ROOT/index.php ] && [ $DRUPAL_DOWNLOAD_IF_NOT_PRESENT = true ]; then
-  echo "Removing any existing files inside $DRUPAL_PROJECT_ROOT..."
-  find $DRUPAL_PROJECT_ROOT -type f -maxdepth 1 -delete || true
-
-  cd $DRUPAL_PROJECT_ROOT
-  composer --version
-  composer create-project --no-interaction --remove-vcs $DRUPAL_PROJECT_NAME:$DRUPAL_PROJECT_VERSION .
-
-  echo "Configuring settings.php with environment variables..."
-  cp $APACHE_DOCUMENT_ROOT/sites/default/default.settings.php $APACHE_DOCUMENT_ROOT/sites/default/settings.php
-  cat <<EOF >> $APACHE_DOCUMENT_ROOT/sites/default/settings.php
-\$databases['default']['default'] = array (
+cd $DRUPAL_PROJECT_ROOT
+echo "Configuring settings.php with environment variables..."
+cp $APACHE_DOCUMENT_ROOT/sites/default/default.settings.php $APACHE_DOCUMENT_ROOT/sites/default/settings.php
+cat <<EOF >> $APACHE_DOCUMENT_ROOT/sites/default/settings.php
+\$databases['default']['default'] = [
   'database' => '$DRUPAL_DATABASE_NAME',
   'username' => '$DRUPAL_DATABASE_USERNAME',
   'password' => '$DRUPAL_DATABASE_PASSWORD',
