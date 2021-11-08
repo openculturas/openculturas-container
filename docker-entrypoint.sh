@@ -5,12 +5,9 @@ set -e
 DRUPAL_PROJECT_NAME=${DRUPAL_PROJECT_NAME:-"openculturas/openculturas-project"}
 DRUPAL_PROJECT_VERSION=${DRUPAL_PROJECT_VERSION:-"dev-main"}
 
-# Allow container to skip the download by setting this to false.
-DRUPAL_DOWNLOAD_IF_NOT_PRESENT=${DRUPAL_DOWNLOAD_IF_NOT_PRESENT:-true}
-
 # Project directories.
-APACHE_DOCUMENT_ROOT=${APACHE_DOCUMENT_ROOT:-"/var/www/html"}
-DRUPAL_PROJECT_ROOT=${DRUPAL_PROJECT_ROOT:-$APACHE_DOCUMENT_ROOT}
+APACHE_DOCUMENT_ROOT=${APACHE_DOCUMENT_ROOT:-"/var/www/html/web"}
+DRUPAL_PROJECT_ROOT=${DRUPAL_PROJECT_ROOT:-"/var/www/html"}
 
 # Allow users to override the docroot by setting an environment variable.
 if [ "$APACHE_DOCUMENT_ROOT" != "/var/www/html" ]; then
