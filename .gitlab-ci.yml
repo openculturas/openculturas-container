@@ -1,0 +1,21 @@
+stages:
+  - build
+  - test
+  - publish
+
+variables:
+  PROJECT_NAME: "openculturas/openculturas-project"
+
+include:
+  - project: 'devops/gitlab-ci-templates'
+    file:
+      - 'drupal.yml'
+
+build:hub:
+  extends: .build_docker
+  only:
+    - main
+    - tags
+  script:
+    - if [ "$CI_COMMIT_REF_NAME" = "main" ]; then TAG="latest"; else TAG=$CI_COMMIT_REF_NAME; fi
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $PROJECT_NAME:$CI_COMMIT_TAG --destination $PROJECT_NAME:latest
