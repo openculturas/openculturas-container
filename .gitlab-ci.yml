@@ -16,6 +16,10 @@ build:hub:
   only:
     - main
     - tags
+  before_script:
+    - echo "{\"auths\":{\"$PROJECT_CI_REGISTRY\":{\"username\":\"$PROJECT_CI_REGISTRY_USER\",\"password\":\"$PROJECT_CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - chmod -R g-w,o-w .
   script:
     - if [ "$CI_COMMIT_REF_NAME" = "main" ]; then TAG="latest"; else TAG=$CI_COMMIT_REF_NAME; fi
+    - cat /kaniko/.docker/config.json
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $PROJECT_NAME:$CI_COMMIT_TAG --destination $PROJECT_NAME:latest
