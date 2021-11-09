@@ -4,7 +4,7 @@ stages:
   - publish
 
 variables:
-  PROJECT_NAME: "openculturas/openculturas-project"
+  PROJECT_NAME: "openculturas/openculturas"
 
 include:
   - project: 'devops/gitlab-ci-templates'
