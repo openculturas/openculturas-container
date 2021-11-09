@@ -29,7 +29,10 @@ cat <<EOF >> $APACHE_DOCUMENT_ROOT/sites/default/settings.php
   'namespace' => 'Drupal\\\\Core\\\\Database\\\\Driver\\\\mysql',
   'driver' => 'mysql',
 ];
-\$settings["config_sync_directory"] = '../config/sync';
+\$settings['trusted_host_patterns'] = [
+  '^.*$',
+];
+\$settings['config_sync_directory'] = '../config/sync';
 \$settings['hash_salt'] = '$DRUPAL_HASH_SALT';
 EOF
 
